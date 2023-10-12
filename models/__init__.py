@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-""" init a package 
-    create a unique FileStorage instance for your application    
+""" init a package
+    create a unique FileStorage instance for your application
 """
 
 
