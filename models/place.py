@@ -2,6 +2,7 @@
 """ BaseModel that defines all common attributes/methods for other classes"""
 from models.base_model import BaseModel
 
+
 class Place(BaseModel):
     """sub class of BaseModel """
     city_id = ""
@@ -15,4 +16,3 @@ class Place(BaseModel):
     latitude = 0.0
     longitude = 0.0
     amenity_ids = []
-
