@@ -65,7 +65,7 @@ class HBNBCommand(cmd.Cmd):
         elif arg[0] not in self.__class__.classes.keys():
             print("** class doesn't exist **")
         elif key not in storage.all():
-            print("* no instance found **")
+            print("** no instance found **")
         else:
             print(f"{storage.all()[key]}")
 
@@ -83,7 +83,7 @@ class HBNBCommand(cmd.Cmd):
         elif arg[0] not in self.__class__.classes.keys():
             print("** class doesn't exist **")
         elif key not in storage.all():
-            print("* no instance found **")
+            print("** no instance found **")
         else:
             del storage.all()[key]
             storage.save()
@@ -92,8 +92,10 @@ class HBNBCommand(cmd.Cmd):
         """ Prints all string representation of all instances
             based or not on the class name.
             Ex: $ all BaseModel or $ all."""
+        print(args)
         list_of_instances = []
         arg = args.split()
+        print(arg)
         if len(arg) >= 1:
             if arg[0] not in self.__class__.classes.keys():
                 print("** class doesn't exist **")
@@ -105,6 +107,14 @@ class HBNBCommand(cmd.Cmd):
             for key, value in storage.all().items():
                 list_of_instances.append(str(value))
         print(list_of_instances)
+
+    def precmd(self, line):
+        """ handle the case of <class name>.all()"""
+        if line.endswith('.all()'):
+            class_name = line.split('.')[0]
+            if class_name in self.classes:
+                return f'all {class_name}'
+        return line
 
     def do_update(self, args):
         """ Updates an instance based on the class name and id by adding
