@@ -115,8 +115,9 @@ class HBNBCommand(cmd.Cmd):
         """
         line = line.lstrip()
         reg_show = r'^(\w+)\.show\(\"([\w-]+)\"\)$'
+        reg_destroy = r'^(\w+)\.destroy\(\"([\w-]+)\"\)$'
         match = re.match(reg_show, line)
-        
+        match1 = re.match(reg_destroy, line)
 
         if line.endswith('.all()'):
             class_name = line.split('.')[0]
@@ -130,6 +131,9 @@ class HBNBCommand(cmd.Cmd):
         elif match:
             class_show, id_str = match.groups()
             return f'show {class_show} {id_str}'
+        elif match1:
+            class_destroy, id_str = match1.groups()
+            return f'destroy {class_destroy} {id_str}'
 
         return line
 
