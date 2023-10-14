@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-""" BaseModel that defines all common attributes/methods for other classes"""
+""" scribt for the class user that defines
+    all common attributes/methods for other classe
+"""
 from models.base_model import BaseModel
 
 
