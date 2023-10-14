@@ -93,10 +93,8 @@ class HBNBCommand(cmd.Cmd):
         """ Prints all string representation of all instances
             based or not on the class name.
             Ex: $ all BaseModel or $ all."""
-        #print(args)
         list_of_instances = []
         arg = args.split()
-        #print(arg)
         if len(arg) >= 1:
             if arg[0] not in self.__class__.classes.keys():
                 print("** class doesn't exist **")
@@ -116,8 +114,11 @@ class HBNBCommand(cmd.Cmd):
         line = line.lstrip()
         reg_show = r'^(\w+)\.show\(\"([\w-]+)\"\)$'
         reg_destroy = r'^(\w+)\.destroy\(\"([\w-]+)\"\)$'
+        reg_update = r'^([\w]+)\.update\("([\w-]+)", "([\w\s]+)", "([\w\s]+)"\)$'
+
         match = re.match(reg_show, line)
         match1 = re.match(reg_destroy, line)
+        match2 = re.match(reg_update, line)
 
         if line.endswith('.all()'):
             class_name = line.split('.')[0]
@@ -134,6 +135,9 @@ class HBNBCommand(cmd.Cmd):
         elif match1:
             class_destroy, id_str = match1.groups()
             return f'destroy {class_destroy} {id_str}'
+        elif match2:
+            class_update, id_str, attribute_name, attribute_value = match2.groups()
+            return f'update {class_update} {id_str} {attribute_name} "{attribute_value}"'
 
         return line
 
@@ -168,11 +172,10 @@ class HBNBCommand(cmd.Cmd):
         """retrieve the number of instances of a class: <class name>.count()"""
         count = 0
         for key in storage.all().keys():
-                if args in key:
-                    count += 1
+            if args in key:
+                count += 1
         print(count)
         return
-
 
 
 if __name__ == '__main__':
