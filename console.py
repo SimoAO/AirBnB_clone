@@ -10,6 +10,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -92,10 +93,10 @@ class HBNBCommand(cmd.Cmd):
         """ Prints all string representation of all instances
             based or not on the class name.
             Ex: $ all BaseModel or $ all."""
-        print(args)
+        #print(args)
         list_of_instances = []
         arg = args.split()
-        print(arg)
+        #print(arg)
         if len(arg) >= 1:
             if arg[0] not in self.__class__.classes.keys():
                 print("** class doesn't exist **")
@@ -109,11 +110,27 @@ class HBNBCommand(cmd.Cmd):
         print(list_of_instances)
 
     def precmd(self, line):
-        """ handle the case of <class name>.all()"""
+        """ handle the case of <class name>.all()
+            handle the case of <class name>.count()
+        """
+        line = line.lstrip()
+        reg_show = r'^(\w+)\.show\(\"([\w-]+)\"\)$'
+        match = re.match(reg_show, line)
+        
+
         if line.endswith('.all()'):
             class_name = line.split('.')[0]
             if class_name in self.classes:
                 return f'all {class_name}'
+        elif line.endswith('.count()'):
+            class_name = line.split('.')[0]
+            if class_name in self.classes:
+                self.count(class_name)
+                return ""
+        elif match:
+            class_show, id_str = match.groups()
+            return f'show {class_show} {id_str}'
+
         return line
 
     def do_update(self, args):
@@ -142,6 +159,16 @@ class HBNBCommand(cmd.Cmd):
             instance = storage.all()[key]
             setattr(instance, arg[2], arg[3])
             storage.save()
+
+    def count(self, args):
+        """retrieve the number of instances of a class: <class name>.count()"""
+        count = 0
+        for key in storage.all().keys():
+                if args in key:
+                    count += 1
+        print(count)
+        return
+
 
 
 if __name__ == '__main__':
