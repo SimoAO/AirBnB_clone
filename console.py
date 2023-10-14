@@ -114,7 +114,8 @@ class HBNBCommand(cmd.Cmd):
         line = line.lstrip()
         reg_show = r'^(\w+)\.show\(\"([\w-]+)\"\)$'
         reg_destroy = r'^(\w+)\.destroy\(\"([\w-]+)\"\)$'
-        reg_update = r'^([\w]+)\.update\("([\w-]+)", "([\w\s]+)", "([\w\s]+)"\)$'
+        reg_update = r'^([\w]+)\.update\("([\w-]+)", ' \
+                     r'"([\w\s]+)", "([\w\s]+)"\)$'
 
         match = re.match(reg_show, line)
         match1 = re.match(reg_destroy, line)
@@ -136,8 +137,10 @@ class HBNBCommand(cmd.Cmd):
             class_destroy, id_str = match1.groups()
             return f'destroy {class_destroy} {id_str}'
         elif match2:
-            class_update, id_str, attribute_name, attribute_value = match2.groups()
-            return f'update {class_update} {id_str} {attribute_name} "{attribute_value}"'
+            class_update, id_str, attribute_name, attribute_value = \
+                match2.groups()
+            return f'update {class_update} {id_str} {attribute_name} ' \
+                   f'"{attribute_value}"'
 
         return line
 
