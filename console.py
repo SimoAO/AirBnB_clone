@@ -2,6 +2,7 @@
 """command interpreter"""
 
 import cmd
+import json
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -108,18 +109,25 @@ class HBNBCommand(cmd.Cmd):
         print(list_of_instances)
 
     def precmd(self, line):
-        """ handle the case of <class name>.all()
-            handle the case of <class name>.count()
+        """ handle the cases of
+            <class name>.all()
+            <class name>.count()
+            <class name>.show(<id>)
+            <class name>.destroy(<id>)
+            <class name>.update(<id>, <attribute name>, <attribute value>)
+            <class name>.update(<id>, <dictionary representation>)
         """
         line = line.lstrip()
         reg_show = r'^(\w+)\.show\(\"([\w-]+)\"\)$'
         reg_destroy = r'^(\w+)\.destroy\(\"([\w-]+)\"\)$'
         reg_update = r'^([\w]+)\.update\("([\w-]+)", ' \
                      r'"([\w\s]+)", "([\w\s]+)"\)$'
+        reg_update_dict = r'^([\w]+)\.update\("([\w-]+)", ({.*})\)$'
 
         match = re.match(reg_show, line)
         match1 = re.match(reg_destroy, line)
         match2 = re.match(reg_update, line)
+        match3 = re.match(reg_update_dict, line)
 
         if line.endswith('.all()'):
             class_name = line.split('.')[0]
@@ -141,7 +149,18 @@ class HBNBCommand(cmd.Cmd):
                 match2.groups()
             return f'update {class_update} {id_str} {attribute_name} ' \
                    f'"{attribute_value}"'
-
+        elif match3:
+            cls_update, id_str, str_dict = match3.groups()
+            print(cls_update)
+            print(id_str)
+            str_dict = str_dict.replace("'", "\"")
+            print(str_dict)
+            dictionnary = json.loads(str_dict)
+            for key , value in dictionnary.items():
+                str_cmd = f'{cls_update} {id_str} {key} "{value}"'
+                print(str_cmd)
+                self.do_update(str_cmd)
+            return ""
         return line
 
     def do_update(self, args):
