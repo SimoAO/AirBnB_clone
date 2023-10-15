@@ -156,7 +156,7 @@ class HBNBCommand(cmd.Cmd):
             str_dict = str_dict.replace("'", "\"")
             print(str_dict)
             dictionnary = json.loads(str_dict)
-            for key , value in dictionnary.items():
+            for key, value in dictionnary.items():
                 str_cmd = f'{cls_update} {id_str} {key} "{value}"'
                 print(str_cmd)
                 self.do_update(str_cmd)
