@@ -77,15 +77,20 @@ article h2{
 .amenities h2, .reviews h2{
 	font-size: 16px;
 	border-bottom: 1px solid #DDDDDD;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
 }
 .amenities ul, .reviews ul{
 	list-style: None;
+	padding-left: 0px;
 }
 .amenities ul h3, .reviews ul h3{
 	font-size: 14px;
+	text-align: left;
 }
 .amenities ul p, .reviews ul p{
 	font-size: 12px;
+	text-align: left;
 }
 .amenities li, .reviews li{
 	list-style: None;
